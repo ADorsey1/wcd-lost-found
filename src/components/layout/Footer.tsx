@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Search, Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
 
 export function Footer() {
   return (
@@ -9,15 +9,15 @@ export function Footer() {
           {/* Brand */}
           <div className="space-y-4">
             <Link to="/" className="flex items-center gap-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-                <Search className="h-5 w-5 text-primary-foreground" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary font-display text-lg text-primary-foreground">
+                E
               </div>
               <span className="font-display text-xl tracking-wide text-foreground">
-                LOST & FOUND
+                EASD LOST & FOUND
               </span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              Helping reunite students with their belongings since 2024.
+              Easton Area School District - Helping reunite students with their belongings.
             </p>
           </div>
 
@@ -82,7 +82,7 @@ export function Footer() {
         </div>
 
         <div className="mt-8 pt-8 border-t border-border text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} School Lost & Found. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Easton Area School District Lost & Found. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -48,7 +48,7 @@ export default function Home() {
     <div className="flex flex-col">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-foreground py-20 md:py-32">
-        <div className="absolute inset-0 bg-[linear-gradient(135deg,hsl(0,85%,45%)_0%,hsl(0,0%,8%)_100%)] opacity-90" />
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,hsl(352,85%,42%)_0%,hsl(0,0%,8%)_100%)] opacity-90" />
         <div className="container relative z-10">
           <div className="mx-auto max-w-3xl text-center">
             <h1 className="font-display text-5xl md:text-7xl tracking-wide text-background mb-6 animate-fade-in">
@@ -57,8 +57,8 @@ export default function Home() {
               <span className="text-primary">WE'VE GOT YOU.</span>
             </h1>
             <p className="text-lg md:text-xl text-background/80 mb-8 animate-slide-up" style={{ animationDelay: "0.2s" }}>
-              Your school's official lost and found system. Search for lost items, 
-              report found belongings, and help reunite students with their stuff.
+              Easton Area School District's official lost and found system. Search for lost items, 
+              report found belongings, and help reunite Rovers with their stuff.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style={{ animationDelay: "0.4s" }}>
               <Link to="/browse">

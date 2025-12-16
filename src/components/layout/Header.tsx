@@ -17,13 +17,18 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-            <Search className="h-5 w-5 text-primary-foreground" />
+        <Link to="/" className="flex items-center gap-3">
+          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary font-display text-xl text-primary-foreground">
+            E
           </div>
-          <span className="font-display text-2xl tracking-wide text-foreground">
-            LOST & FOUND
-          </span>
+          <div className="flex flex-col">
+            <span className="font-display text-xl tracking-wide text-foreground leading-tight">
+              EASD LOST & FOUND
+            </span>
+            <span className="text-xs text-muted-foreground">
+              Easton Area School District
+            </span>
+          </div>
         </Link>
 
         {/* Desktop Navigation */}
