@@ -1,0 +1,90 @@
+import { Link } from "react-router-dom";
+import { Search, Mail, Phone, MapPin } from "lucide-react";
+
+export function Footer() {
+  return (
+    <footer className="border-t border-border bg-secondary/50">
+      <div className="container py-12">
+        <div className="grid gap-8 md:grid-cols-4">
+          {/* Brand */}
+          <div className="space-y-4">
+            <Link to="/" className="flex items-center gap-2">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
+                <Search className="h-5 w-5 text-primary-foreground" />
+              </div>
+              <span className="font-display text-xl tracking-wide text-foreground">
+                LOST & FOUND
+              </span>
+            </Link>
+            <p className="text-sm text-muted-foreground">
+              Helping reunite students with their belongings since 2024.
+            </p>
+          </div>
+
+          {/* Quick Links */}
+          <div className="space-y-4">
+            <h3 className="font-display text-lg tracking-wide text-foreground">
+              QUICK LINKS
+            </h3>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <Link to="/browse" className="text-muted-foreground hover:text-primary transition-colors">
+                  Browse Items
+                </Link>
+              </li>
+              <li>
+                <Link to="/submit" className="text-muted-foreground hover:text-primary transition-colors">
+                  Report Found Item
+                </Link>
+              </li>
+              <li>
+                <Link to="/claim" className="text-muted-foreground hover:text-primary transition-colors">
+                  Claim an Item
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div className="space-y-4">
+            <h3 className="font-display text-lg tracking-wide text-foreground">
+              CONTACT
+            </h3>
+            <ul className="space-y-2 text-sm">
+              <li className="flex items-center gap-2 text-muted-foreground">
+                <Mail className="h-4 w-4" />
+                lostandfound@school.edu
+              </li>
+              <li className="flex items-center gap-2 text-muted-foreground">
+                <Phone className="h-4 w-4" />
+                (555) 123-4567
+              </li>
+              <li className="flex items-center gap-2 text-muted-foreground">
+                <MapPin className="h-4 w-4" />
+                Main Office, Room 101
+              </li>
+            </ul>
+          </div>
+
+          {/* Hours */}
+          <div className="space-y-4">
+            <h3 className="font-display text-lg tracking-wide text-foreground">
+              OFFICE HOURS
+            </h3>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>Monday - Friday</li>
+              <li>8:00 AM - 4:00 PM</li>
+              <li className="pt-2 text-primary font-medium">
+                Items held for 30 days
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-8 pt-8 border-t border-border text-center text-sm text-muted-foreground">
+          <p>© {new Date().getFullYear()} School Lost & Found. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  );
+}
