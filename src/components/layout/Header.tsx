@@ -22,7 +22,7 @@ export function Header() {
           <img src={easdLogo} alt="Easton Area School District Logo" className="h-12 w-auto" />
           <div className="flex flex-col">
             <span className="font-display text-xl tracking-wide text-foreground leading-tight">
-              EASD LOST & FOUND
+              ROVER SEARCH
             </span>
             <span className="text-xs text-muted-foreground">
               Easton Area School District
