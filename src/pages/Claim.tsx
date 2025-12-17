@@ -7,9 +7,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Send, ArrowLeft, CheckCircle } from "lucide-react";
+import { Send, ArrowLeft, CheckCircle, Package, MapPin, Calendar } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 export default function Claim() {
   const [searchParams] = useSearchParams();
@@ -30,6 +37,23 @@ export default function Claim() {
       return data;
     },
     enabled: !!itemId,
+  });
+
+  // Fetch available items for carousel when no item is selected
+  const { data: availableItems, isLoading: isLoadingItems } = useQuery({
+    queryKey: ['available-items'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('found_items')
+        .select('*')
+        .eq('status', 'available')
+        .order('created_at', { ascending: false })
+        .limit(10);
+      
+      if (error) throw error;
+      return data;
+    },
+    enabled: !itemId,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -156,12 +180,69 @@ export default function Claim() {
           </Card>
         )}
 
+        {/* Item Selection Carousel - shown when no item selected */}
         {!itemId && (
-          <Card className="mb-6 border-yellow-500/20 bg-yellow-500/5">
-            <CardContent className="pt-6">
-              <p className="text-sm text-muted-foreground">
-                No item selected. Please <Link to="/browse" className="text-primary underline">browse items</Link> and select one to claim.
-              </p>
+          <Card className="mb-6 border-primary/20 bg-accent/30">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg">Select an Item to Claim</CardTitle>
+              <CardDescription>
+                Browse available items below or <Link to="/browse" className="text-primary underline">view all items</Link>
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {isLoadingItems ? (
+                <div className="flex gap-4">
+                  {[1, 2, 3].map((i) => (
+                    <Skeleton key={i} className="h-32 w-40 rounded-lg flex-shrink-0" />
+                  ))}
+                </div>
+              ) : availableItems && availableItems.length > 0 ? (
+                <Carousel className="w-full" opts={{ align: "start", loop: true }}>
+                  <CarouselContent className="-ml-2">
+                    {availableItems.map((item) => (
+                      <CarouselItem key={item.id} className="pl-2 basis-1/2 md:basis-1/3">
+                        <button
+                          onClick={() => navigate(`/claim?item=${item.id}`)}
+                          className="w-full text-left"
+                        >
+                          <Card className="h-full hover:border-primary/50 transition-colors cursor-pointer">
+                            <CardContent className="p-3">
+                              {item.image_url ? (
+                                <img
+                                  src={item.image_url}
+                                  alt={item.name}
+                                  className="h-20 w-full rounded object-cover mb-2"
+                                />
+                              ) : (
+                                <div className="h-20 w-full rounded bg-muted flex items-center justify-center mb-2">
+                                  <Package className="h-8 w-8 text-muted-foreground" />
+                                </div>
+                              )}
+                              <h4 className="font-medium text-sm text-foreground truncate">
+                                {item.name}
+                              </h4>
+                              <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
+                                <MapPin className="h-3 w-3" />
+                                <span className="truncate">{item.location}</span>
+                              </div>
+                              <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                                <Calendar className="h-3 w-3" />
+                                <span>{new Date(item.date_found).toLocaleDateString()}</span>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        </button>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="-left-4" />
+                  <CarouselNext className="-right-4" />
+                </Carousel>
+              ) : (
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  No items currently available. Check back later!
+                </p>
+              )}
             </CardContent>
           </Card>
         )}
