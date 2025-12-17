@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Search, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import easdLogo from "@/assets/easd-logo.png";
 import { useState } from "react";
 
 const navLinks = [
@@ -18,9 +19,7 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary font-display text-xl text-primary-foreground">
-            E
-          </div>
+          <img src={easdLogo} alt="Easton Area School District Logo" className="h-12 w-auto" />
           <div className="flex flex-col">
             <span className="font-display text-xl tracking-wide text-foreground leading-tight">
               EASD LOST & FOUND
