@@ -123,7 +123,7 @@ export default function Home() {
                 className="text-center animate-slide-up"
                 style={{ animationDelay: `${index * 0.15}s` }}
               >
-                <div className="font-display text-6xl text-primary/20 mb-2">
+                <div className="font-display text-6xl text-primary/40 mb-2">
                   {item.step}
                 </div>
                 <h3 className="font-display text-2xl text-foreground mb-2">
