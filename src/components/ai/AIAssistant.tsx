@@ -13,7 +13,7 @@ interface Message {
 const initialMessage: Message = {
   id: "1",
   role: "assistant",
-  content: "Hi! I'm your EAHS Lost & Found assistant. I can help you:\n\n• Search for lost items\n• Guide you through claiming items\n• Answer questions from the Student Handbook\n• Provide office hours and contact info\n\nHow can I help you today?",
+  content: "Welcome to the EAHS Lost & Found Assistant. I am here to assist you with the following:\n\n• Locating and claiming lost items\n• Reporting found belongings\n• Student Handbook inquiries\n• School contact information and office hours\n\nHow may I assist you today?",
 };
 
 // Handbook-powered response logic
