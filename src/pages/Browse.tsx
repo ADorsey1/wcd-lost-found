@@ -29,6 +29,9 @@ export default function Browse() {
         dateFound: item.date_found,
         imageUrl: item.image_url || undefined,
         status: item.status as 'available' | 'claimed' | 'pending',
+        reporterName: item.reporter_name,
+        reporterEmail: item.reporter_email,
+        reporterPhone: item.reporter_phone || undefined,
       }));
     },
   });
