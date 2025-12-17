@@ -41,6 +41,11 @@ export function Footer() {
                   Claim an Item
                 </Link>
               </li>
+              <li className="pt-2 border-t border-border mt-2">
+                <Link to="/admin/login" className="text-muted-foreground hover:text-primary transition-colors">
+                  Staff Login
+                </Link>
+              </li>
             </ul>
           </div>
 
