@@ -57,15 +57,15 @@ export function Footer() {
             <ul className="space-y-2 text-sm">
               <li className="flex items-center gap-2 text-muted-foreground">
                 <Mail className="h-4 w-4" />
-                lostandfound@school.edu
+                lostandfound@eastonsd.org
               </li>
               <li className="flex items-center gap-2 text-muted-foreground">
                 <Phone className="h-4 w-4" />
-                (555) 123-4567
+                (610) 730-0274
               </li>
               <li className="flex items-center gap-2 text-muted-foreground">
                 <MapPin className="h-4 w-4" />
-                Main Office, Room 101
+                Cafeteria Exit Doors
               </li>
             </ul>
           </div>
