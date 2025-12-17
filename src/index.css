@@ -28,9 +28,9 @@
     --secondary: 0 0% 96%;
     --secondary-foreground: 0 0% 0%;
 
-    /* Muted: Gray #808080 */
-    --muted: 0 0% 50%;
-    --muted-foreground: 0 0% 96%;
+    /* Muted: Gray */
+    --muted: 0 0% 92%;
+    --muted-foreground: 0 0% 40%;
 
     /* Accent: Crimson tint */
     --accent: 352 60% 95%;
