@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { LogOut, Trash2, Eye, CheckCircle, XCircle, Package, FileText } from "lucide-react";
+import { LogOut, Trash2, Eye, CheckCircle, XCircle, Package, FileText, Eraser } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -189,6 +189,26 @@ export default function Admin() {
     },
   });
 
+  // Clear all claims mutation
+  const clearClaimsMutation = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase
+        .from('claims')
+        .delete()
+        .neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all
+      
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-claims'] });
+      toast.success("All claims cleared successfully");
+    },
+    onError: (error) => {
+      console.error('Clear claims error:', error);
+      toast.error("Failed to clear claims");
+    },
+  });
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate('/admin/login');
@@ -218,10 +238,10 @@ export default function Admin() {
   }
 
   return (
-    <div className="py-8 md:py-12">
+    <main className="py-8 md:py-12" role="main" aria-label="Admin Dashboard">
       <div className="container">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+        <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           <div>
             <h1 className="font-display text-4xl md:text-5xl tracking-wide text-foreground mb-2">
               ADMIN DASHBOARD
@@ -230,35 +250,35 @@ export default function Admin() {
               Manage lost and found items and claims
             </p>
           </div>
-          <Button variant="outline" onClick={handleLogout}>
-            <LogOut className="mr-2 h-4 w-4" />
+          <Button variant="outline" onClick={handleLogout} aria-label="Logout from admin dashboard">
+            <LogOut className="mr-2 h-4 w-4" aria-hidden="true" />
             Logout
           </Button>
-        </div>
+        </header>
 
         {/* Stats */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <Card>
+        <section aria-label="Dashboard statistics" className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <Card role="region" aria-label="Total items count">
             <CardContent className="pt-6">
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center" aria-hidden="true">
                   <Package className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">{items.length}</p>
+                  <p className="text-2xl font-bold" aria-label={`${items.length} total items`}>{items.length}</p>
                   <p className="text-sm text-muted-foreground">Total Items</p>
                 </div>
               </div>
             </CardContent>
           </Card>
-          <Card>
+          <Card role="region" aria-label="Available items count">
             <CardContent className="pt-6">
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-lg bg-green-500/10 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-lg bg-green-500/10 flex items-center justify-center" aria-hidden="true">
                   <CheckCircle className="h-6 w-6 text-green-600" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">
+                  <p className="text-2xl font-bold" aria-label={`${items.filter(i => i.status === 'available').length} available items`}>
                     {items.filter(i => i.status === 'available').length}
                   </p>
                   <p className="text-sm text-muted-foreground">Available</p>
@@ -266,14 +286,14 @@ export default function Admin() {
               </div>
             </CardContent>
           </Card>
-          <Card>
+          <Card role="region" aria-label="Pending claims count">
             <CardContent className="pt-6">
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-lg bg-yellow-500/10 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-lg bg-yellow-500/10 flex items-center justify-center" aria-hidden="true">
                   <FileText className="h-6 w-6 text-yellow-600" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">
+                  <p className="text-2xl font-bold" aria-label={`${claims.filter(c => c.status === 'pending').length} pending claims`}>
                     {claims.filter(c => c.status === 'pending').length}
                   </p>
                   <p className="text-sm text-muted-foreground">Pending Claims</p>
@@ -281,14 +301,14 @@ export default function Admin() {
               </div>
             </CardContent>
           </Card>
-          <Card>
+          <Card role="region" aria-label="Claimed items count">
             <CardContent className="pt-6">
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-lg bg-muted flex items-center justify-center">
+                <div className="h-12 w-12 rounded-lg bg-muted flex items-center justify-center" aria-hidden="true">
                   <XCircle className="h-6 w-6 text-muted-foreground" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">
+                  <p className="text-2xl font-bold" aria-label={`${items.filter(i => i.status === 'claimed').length} claimed items`}>
                     {items.filter(i => i.status === 'claimed').length}
                   </p>
                   <p className="text-sm text-muted-foreground">Claimed</p>
@@ -296,13 +316,13 @@ export default function Admin() {
               </div>
             </CardContent>
           </Card>
-        </div>
+        </section>
 
         {/* Tabs */}
         <Tabs defaultValue="items" className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="items">Items ({items.length})</TabsTrigger>
-            <TabsTrigger value="claims">Claims ({claims.length})</TabsTrigger>
+          <TabsList aria-label="Admin management tabs">
+            <TabsTrigger value="items" aria-label={`Items tab, ${items.length} items`}>Items ({items.length})</TabsTrigger>
+            <TabsTrigger value="claims" aria-label={`Claims tab, ${claims.length} claims`}>Claims ({claims.length})</TabsTrigger>
           </TabsList>
 
           <TabsContent value="items">
@@ -315,26 +335,26 @@ export default function Admin() {
               </CardHeader>
               <CardContent>
                 {itemsLoading ? (
-                  <div className="space-y-4">
+                  <div className="space-y-4" aria-label="Loading items">
                     {[...Array(5)].map((_, i) => (
-                      <Skeleton key={i} className="h-12 w-full" />
+                      <Skeleton key={i} className="h-12 w-full" aria-hidden="true" />
                     ))}
                   </div>
                 ) : items.length === 0 ? (
-                  <p className="text-center text-muted-foreground py-8">
+                  <p className="text-center text-muted-foreground py-8" role="status">
                     No items have been reported yet.
                   </p>
                 ) : (
                   <div className="overflow-x-auto">
-                    <Table>
+                    <Table aria-label="Found items table">
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Item</TableHead>
-                          <TableHead>Location</TableHead>
-                          <TableHead>Date Found</TableHead>
-                          <TableHead>Reporter</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead className="text-right">Actions</TableHead>
+                          <TableHead scope="col">Item</TableHead>
+                          <TableHead scope="col">Location</TableHead>
+                          <TableHead scope="col">Date Found</TableHead>
+                          <TableHead scope="col">Reporter</TableHead>
+                          <TableHead scope="col">Status</TableHead>
+                          <TableHead scope="col" className="text-right">Actions</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -384,14 +404,15 @@ export default function Admin() {
                                       itemId: item.id,
                                       status: 'claimed'
                                     })}
+                                    aria-label={`Mark ${item.name} as claimed`}
                                   >
-                                    <CheckCircle className="h-4 w-4" />
+                                    <CheckCircle className="h-4 w-4" aria-hidden="true" />
                                   </Button>
                                 )}
                                 <AlertDialog>
                                   <AlertDialogTrigger asChild>
-                                    <Button variant="destructive" size="sm">
-                                      <Trash2 className="h-4 w-4" />
+                                    <Button variant="destructive" size="sm" aria-label={`Delete ${item.name}`}>
+                                      <Trash2 className="h-4 w-4" aria-hidden="true" />
                                     </Button>
                                   </AlertDialogTrigger>
                                   <AlertDialogContent>
@@ -426,34 +447,63 @@ export default function Admin() {
 
           <TabsContent value="claims">
             <Card>
-              <CardHeader>
-                <CardTitle>Claims</CardTitle>
-                <CardDescription>
-                  Review and manage item claims
-                </CardDescription>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <div>
+                  <CardTitle>Claims</CardTitle>
+                  <CardDescription>
+                    Review and manage item claims
+                  </CardDescription>
+                </div>
+                {claims.length > 0 && (
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="outline" size="sm" aria-label="Clear all claims">
+                        <Eraser className="mr-2 h-4 w-4" aria-hidden="true" />
+                        Clear All
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Clear All Claims?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This will permanently delete all {claims.length} claims. This action cannot be undone.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => clearClaimsMutation.mutate()}
+                          className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        >
+                          Clear All
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                )}
               </CardHeader>
               <CardContent>
                 {claimsLoading ? (
-                  <div className="space-y-4">
+                  <div className="space-y-4" aria-label="Loading claims">
                     {[...Array(5)].map((_, i) => (
-                      <Skeleton key={i} className="h-12 w-full" />
+                      <Skeleton key={i} className="h-12 w-full" aria-hidden="true" />
                     ))}
                   </div>
                 ) : claims.length === 0 ? (
-                  <p className="text-center text-muted-foreground py-8">
+                  <p className="text-center text-muted-foreground py-8" role="status">
                     No claims have been submitted yet.
                   </p>
                 ) : (
                   <div className="overflow-x-auto">
-                    <Table>
+                    <Table aria-label="Claims table">
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Item</TableHead>
-                          <TableHead>Claimant</TableHead>
-                          <TableHead>Contact</TableHead>
-                          <TableHead>Proof</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead className="text-right">Actions</TableHead>
+                          <TableHead scope="col">Item</TableHead>
+                          <TableHead scope="col">Claimant</TableHead>
+                          <TableHead scope="col">Contact</TableHead>
+                          <TableHead scope="col">Proof</TableHead>
+                          <TableHead scope="col">Status</TableHead>
+                          <TableHead scope="col" className="text-right">Actions</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -511,8 +561,9 @@ export default function Admin() {
                                       status: 'approved',
                                       itemId: claim.item_id
                                     })}
+                                    aria-label={`Approve claim for ${claim.found_items?.name || 'item'}`}
                                   >
-                                    <CheckCircle className="h-4 w-4" />
+                                    <CheckCircle className="h-4 w-4" aria-hidden="true" />
                                   </Button>
                                   <Button
                                     variant="outline"
@@ -523,8 +574,9 @@ export default function Admin() {
                                       status: 'rejected',
                                       itemId: claim.item_id
                                     })}
+                                    aria-label={`Reject claim for ${claim.found_items?.name || 'item'}`}
                                   >
-                                    <XCircle className="h-4 w-4" />
+                                    <XCircle className="h-4 w-4" aria-hidden="true" />
                                   </Button>
                                 </div>
                               )}
@@ -540,6 +592,6 @@ export default function Admin() {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+    </main>
   );
 }
