@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin } from "lucide-react";
+import easdLogo from "@/assets/easd-logo.png";
 
 export function Footer() {
   return (
@@ -9,9 +10,7 @@ export function Footer() {
           {/* Brand */}
           <div className="space-y-4">
             <Link to="/" className="flex items-center gap-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary font-display text-lg text-primary-foreground">
-                E
-              </div>
+              <img src={easdLogo} alt="Easton Area School District Logo" className="h-10 w-auto" />
               <span className="font-display text-xl tracking-wide text-foreground">
                 EASD LOST & FOUND
               </span>
