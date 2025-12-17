@@ -9,6 +9,8 @@ import Home from "@/pages/Home";
 import Browse from "@/pages/Browse";
 import Submit from "@/pages/Submit";
 import Claim from "@/pages/Claim";
+import AdminLogin from "@/pages/AdminLogin";
+import Admin from "@/pages/Admin";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +28,8 @@ const App = () => (
               <Route path="/browse" element={<Browse />} />
               <Route path="/submit" element={<Submit />} />
               <Route path="/claim" element={<Claim />} />
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin" element={<Admin />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
