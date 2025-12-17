@@ -16,6 +16,7 @@ export default function Browse() {
       const { data, error } = await supabase
         .from('found_items')
         .select('*')
+        .neq('status', 'claimed')
         .order('created_at', { ascending: false });
       
       if (error) throw error;
