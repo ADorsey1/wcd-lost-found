@@ -1,19 +1,36 @@
 import { useState } from "react";
 import { useSearchParams, useNavigate, Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { mockItems } from "@/data/mockItems";
 import { toast } from "sonner";
 import { Send, ArrowLeft, CheckCircle } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Claim() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const itemId = searchParams.get("item");
-  const selectedItem = itemId ? mockItems.find((i) => i.id === itemId) : null;
+
+  const { data: selectedItem, isLoading } = useQuery({
+    queryKey: ['found-item', itemId],
+    queryFn: async () => {
+      if (!itemId) return null;
+      const { data, error } = await supabase
+        .from('found_items')
+        .select('*')
+        .eq('id', itemId)
+        .maybeSingle();
+      
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!itemId,
+  });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -21,23 +38,56 @@ export default function Claim() {
     email: "",
     phone: "",
     studentId: "",
-    itemDescription: "",
     proofOfOwnership: "",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!itemId) {
+      toast.error("No item selected");
+      return;
+    }
+
     setIsSubmitting(true);
 
-    // Simulate submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      const { error } = await supabase
+        .from('claims')
+        .insert({
+          item_id: itemId,
+          claimant_name: formData.name,
+          claimant_email: formData.email,
+          claimant_phone: formData.phone || null,
+          student_id: formData.studentId || null,
+          description_proof: formData.proofOfOwnership,
+          status: 'pending',
+        });
 
-    toast.success("Claim submitted successfully!", {
-      description: "We'll review your claim and contact you within 24-48 hours.",
-    });
+      if (error) {
+        console.error('Claim error:', error);
+        throw error;
+      }
 
-    setIsSubmitting(false);
-    navigate("/browse");
+      // Update item status to pending
+      await supabase
+        .from('found_items')
+        .update({ status: 'pending' })
+        .eq('id', itemId);
+
+      toast.success("Claim submitted successfully!", {
+        description: "We'll review your claim and contact you within 24-48 hours.",
+      });
+
+      navigate("/browse");
+    } catch (error) {
+      console.error('Submission error:', error);
+      toast.error("Failed to submit claim", {
+        description: "Please try again later.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -67,13 +117,27 @@ export default function Claim() {
         </div>
 
         {/* Selected Item Preview */}
+        {isLoading && (
+          <Card className="mb-6 border-primary/20 bg-accent/30">
+            <CardContent className="pt-6">
+              <div className="flex gap-4">
+                <Skeleton className="h-20 w-20 rounded-lg" />
+                <div className="space-y-2">
+                  <Skeleton className="h-5 w-48" />
+                  <Skeleton className="h-4 w-32" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {selectedItem && (
           <Card className="mb-6 border-primary/20 bg-accent/30">
             <CardContent className="pt-6">
               <div className="flex gap-4">
-                {selectedItem.imageUrl && (
+                {selectedItem.image_url && (
                   <img
-                    src={selectedItem.imageUrl}
+                    src={selectedItem.image_url}
                     alt={selectedItem.name}
                     className="h-20 w-20 rounded-lg object-cover"
                   />
@@ -84,10 +148,20 @@ export default function Claim() {
                   </h3>
                   <p className="text-sm text-muted-foreground">
                     Found at {selectedItem.location} on{" "}
-                    {new Date(selectedItem.dateFound).toLocaleDateString()}
+                    {new Date(selectedItem.date_found).toLocaleDateString()}
                   </p>
                 </div>
               </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {!itemId && (
+          <Card className="mb-6 border-yellow-500/20 bg-yellow-500/5">
+            <CardContent className="pt-6">
+              <p className="text-sm text-muted-foreground">
+                No item selected. Please <Link to="/browse" className="text-primary underline">browse items</Link> and select one to claim.
+              </p>
             </CardContent>
           </Card>
         )}
@@ -130,26 +204,24 @@ export default function Claim() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number *</Label>
+                    <Label htmlFor="phone">Phone Number</Label>
                     <Input
                       id="phone"
                       type="tel"
                       placeholder="(555) 123-4567"
                       value={formData.phone}
                       onChange={(e) => handleInputChange("phone", e.target.value)}
-                      required
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="studentId">Student ID Number *</Label>
+                  <Label htmlFor="studentId">Student ID Number</Label>
                   <Input
                     id="studentId"
-                    placeholder="Enter your student ID"
+                    placeholder="Enter your student ID (optional)"
                     value={formData.studentId}
                     onChange={(e) => handleInputChange("studentId", e.target.value)}
-                    required
                   />
                 </div>
               </div>
@@ -159,36 +231,19 @@ export default function Claim() {
                 <h3 className="font-semibold text-foreground">Item Verification</h3>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="itemDescription">
-                    Describe the Item in Detail *
+                  <Label htmlFor="proofOfOwnership">
+                    Proof of Ownership / Description *
                   </Label>
                   <Textarea
-                    id="itemDescription"
-                    placeholder="Describe specific features: brand, color, size, any markings or damage, contents (if applicable)..."
-                    value={formData.itemDescription}
-                    onChange={(e) => handleInputChange("itemDescription", e.target.value)}
-                    rows={4}
+                    id="proofOfOwnership"
+                    placeholder="Describe specific features that prove this is your item: brand, color, unique markings, serial numbers, contents, lock combinations, etc..."
+                    value={formData.proofOfOwnership}
+                    onChange={(e) => handleInputChange("proofOfOwnership", e.target.value)}
+                    rows={5}
                     required
                   />
                   <p className="text-xs text-muted-foreground">
                     Be as specific as possible. This helps us verify you're the rightful owner.
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="proofOfOwnership">
-                    Proof of Ownership *
-                  </Label>
-                  <Textarea
-                    id="proofOfOwnership"
-                    placeholder="Describe any unique identifiers: serial numbers, photos you have, receipts, personal markings, lock combinations, specific contents..."
-                    value={formData.proofOfOwnership}
-                    onChange={(e) => handleInputChange("proofOfOwnership", e.target.value)}
-                    rows={4}
-                    required
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    We may ask you to verify this information when you pick up the item.
                   </p>
                 </div>
               </div>
@@ -206,7 +261,12 @@ export default function Claim() {
                 </ul>
               </div>
 
-              <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
+              <Button 
+                type="submit" 
+                className="w-full" 
+                size="lg" 
+                disabled={isSubmitting || !itemId}
+              >
                 {isSubmitting ? (
                   <>
                     <Send className="mr-2 h-4 w-4 animate-spin" />

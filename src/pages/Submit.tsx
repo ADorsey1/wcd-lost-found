@@ -15,10 +15,12 @@ import {
 import { categories, locations } from "@/components/items/SearchFilters";
 import { toast } from "sonner";
 import { Upload, Camera, CheckCircle } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function Submit() {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     itemName: "",
@@ -34,6 +36,7 @@ export default function Submit() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setImageFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result as string);
@@ -46,15 +49,64 @@ export default function Submit() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      let imageUrl: string | null = null;
 
-    toast.success("Item submitted successfully!", {
-      description: "Thank you for helping reunite someone with their belongings.",
-    });
+      // Upload image if provided
+      if (imageFile) {
+        const fileExt = imageFile.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+        
+        const { error: uploadError, data: uploadData } = await supabase.storage
+          .from('item-images')
+          .upload(fileName, imageFile);
 
-    setIsSubmitting(false);
-    navigate("/browse");
+        if (uploadError) {
+          console.error('Upload error:', uploadError);
+          throw new Error('Failed to upload image');
+        }
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('item-images')
+          .getPublicUrl(fileName);
+        
+        imageUrl = publicUrl;
+      }
+
+      // Insert item into database
+      const { error: insertError } = await supabase
+        .from('found_items')
+        .insert({
+          name: formData.itemName,
+          description: formData.description,
+          category: formData.category,
+          location: formData.location,
+          date_found: formData.dateFound,
+          image_url: imageUrl,
+          reporter_name: formData.finderName,
+          reporter_email: formData.finderEmail,
+          reporter_phone: formData.finderPhone || null,
+          status: 'available',
+        });
+
+      if (insertError) {
+        console.error('Insert error:', insertError);
+        throw new Error('Failed to submit item');
+      }
+
+      toast.success("Item submitted successfully!", {
+        description: "Thank you for helping reunite someone with their belongings.",
+      });
+
+      navigate("/browse");
+    } catch (error) {
+      console.error('Submission error:', error);
+      toast.error("Failed to submit item", {
+        description: "Please try again later.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
