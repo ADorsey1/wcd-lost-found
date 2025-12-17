@@ -54,7 +54,7 @@ export default function Home() {
             <h1 className="font-display text-5xl md:text-7xl tracking-wide text-background mb-6 animate-fade-in">
               LOST SOMETHING?
               <br />
-              <span className="text-primary">WE'VE GOT YOU.</span>
+              <span className="text-primary">WE CAN HELP.</span>
             </h1>
             <p className="text-lg md:text-xl text-background/80 mb-8 animate-slide-up" style={{ animationDelay: "0.2s" }}>
               Easton Area School District's official lost and found system. Search for lost items, 
