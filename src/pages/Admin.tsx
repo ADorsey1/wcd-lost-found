@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import { LogOut, Trash2, Eye, CheckCircle, XCircle, Package, FileText, Eraser } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -397,24 +398,42 @@ export default function Admin() {
                             <TableCell className="text-right">
                               <div className="flex justify-end gap-2">
                                 {item.status === 'available' && (
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => updateItemStatusMutation.mutate({
-                                      itemId: item.id,
-                                      status: 'claimed'
-                                    })}
-                                    aria-label={`Mark ${item.name} as claimed`}
-                                  >
-                                    <CheckCircle className="h-4 w-4" aria-hidden="true" />
-                                  </Button>
+                                  <TooltipProvider>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <Button
+                                          variant="outline"
+                                          size="sm"
+                                          onClick={() => updateItemStatusMutation.mutate({
+                                            itemId: item.id,
+                                            status: 'claimed'
+                                          })}
+                                          aria-label={`Mark ${item.name} as claimed`}
+                                        >
+                                          <CheckCircle className="h-4 w-4" aria-hidden="true" />
+                                        </Button>
+                                      </TooltipTrigger>
+                                      <TooltipContent>
+                                        <p>Mark as claimed</p>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
                                 )}
                                 <AlertDialog>
-                                  <AlertDialogTrigger asChild>
-                                    <Button variant="destructive" size="sm" aria-label={`Delete ${item.name}`}>
-                                      <Trash2 className="h-4 w-4" aria-hidden="true" />
-                                    </Button>
-                                  </AlertDialogTrigger>
+                                  <TooltipProvider>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <AlertDialogTrigger asChild>
+                                          <Button variant="destructive" size="sm" aria-label={`Delete ${item.name}`}>
+                                            <Trash2 className="h-4 w-4" aria-hidden="true" />
+                                          </Button>
+                                        </AlertDialogTrigger>
+                                      </TooltipTrigger>
+                                      <TooltipContent>
+                                        <p>Delete item</p>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
                                   <AlertDialogContent>
                                     <AlertDialogHeader>
                                       <AlertDialogTitle>Delete Item?</AlertDialogTitle>
@@ -552,32 +571,50 @@ export default function Admin() {
                             <TableCell className="text-right">
                               {claim.status === 'pending' && (
                                 <div className="flex justify-end gap-2">
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    className="text-green-600 hover:text-green-700"
-                                    onClick={() => updateClaimStatusMutation.mutate({
-                                      claimId: claim.id,
-                                      status: 'approved',
-                                      itemId: claim.item_id
-                                    })}
-                                    aria-label={`Approve claim for ${claim.found_items?.name || 'item'}`}
-                                  >
-                                    <CheckCircle className="h-4 w-4" aria-hidden="true" />
-                                  </Button>
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    className="text-red-600 hover:text-red-700"
-                                    onClick={() => updateClaimStatusMutation.mutate({
-                                      claimId: claim.id,
-                                      status: 'rejected',
-                                      itemId: claim.item_id
-                                    })}
-                                    aria-label={`Reject claim for ${claim.found_items?.name || 'item'}`}
-                                  >
-                                    <XCircle className="h-4 w-4" aria-hidden="true" />
-                                  </Button>
+                                  <TooltipProvider>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <Button
+                                          variant="outline"
+                                          size="sm"
+                                          className="text-green-600 hover:text-green-700"
+                                          onClick={() => updateClaimStatusMutation.mutate({
+                                            claimId: claim.id,
+                                            status: 'approved',
+                                            itemId: claim.item_id
+                                          })}
+                                          aria-label={`Approve claim for ${claim.found_items?.name || 'item'}`}
+                                        >
+                                          <CheckCircle className="h-4 w-4" aria-hidden="true" />
+                                        </Button>
+                                      </TooltipTrigger>
+                                      <TooltipContent>
+                                        <p>Approve claim</p>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
+                                  <TooltipProvider>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <Button
+                                          variant="outline"
+                                          size="sm"
+                                          className="text-red-600 hover:text-red-700"
+                                          onClick={() => updateClaimStatusMutation.mutate({
+                                            claimId: claim.id,
+                                            status: 'rejected',
+                                            itemId: claim.item_id
+                                          })}
+                                          aria-label={`Reject claim for ${claim.found_items?.name || 'item'}`}
+                                        >
+                                          <XCircle className="h-4 w-4" aria-hidden="true" />
+                                        </Button>
+                                      </TooltipTrigger>
+                                      <TooltipContent>
+                                        <p>Reject claim</p>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
                                 </div>
                               )}
                             </TableCell>
