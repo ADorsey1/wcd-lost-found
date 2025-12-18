@@ -28,7 +28,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.log(`Sending approval email to ${claimantEmail} for item: ${itemName}`);
 
     const emailResponse = await resend.emails.send({
-      from: "Rover Search <onboarding@resend.dev>",
+      from: "Rover Search <easdlostandfound@gmail.com>",
       to: [claimantEmail],
       subject: "Your Lost Item Claim Has Been Approved!",
       html: `
