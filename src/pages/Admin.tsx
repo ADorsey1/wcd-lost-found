@@ -151,7 +151,14 @@ export default function Admin() {
 
   // Update claim status mutation
   const updateClaimStatusMutation = useMutation({
-    mutationFn: async ({ claimId, status, itemId }: { claimId: string; status: string; itemId: string }) => {
+    mutationFn: async ({ claimId, status, itemId, claimantName, claimantEmail, itemName }: { 
+      claimId: string; 
+      status: string; 
+      itemId: string;
+      claimantName?: string;
+      claimantEmail?: string;
+      itemName?: string;
+    }) => {
       const { error: claimError } = await supabase
         .from('claims')
         .update({ status })
@@ -159,7 +166,7 @@ export default function Admin() {
       
       if (claimError) throw claimError;
 
-      // If approved, mark item as claimed
+      // If approved, mark item as claimed and send email
       if (status === 'approved') {
         const { error: itemError } = await supabase
           .from('found_items')
@@ -167,6 +174,20 @@ export default function Admin() {
           .eq('id', itemId);
         
         if (itemError) throw itemError;
+
+        // Send approval email
+        if (claimantName && claimantEmail && itemName) {
+          try {
+            const { error: emailError } = await supabase.functions.invoke('send-claim-approved', {
+              body: { claimantName, claimantEmail, itemName }
+            });
+            if (emailError) {
+              console.error('Email sending failed:', emailError);
+            }
+          } catch (emailErr) {
+            console.error('Failed to send approval email:', emailErr);
+          }
+        }
       }
 
       // If rejected, reset item to available
@@ -179,10 +200,14 @@ export default function Admin() {
         if (itemError) throw itemError;
       }
     },
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['admin-items'] });
       queryClient.invalidateQueries({ queryKey: ['admin-claims'] });
-      toast.success("Claim status updated");
+      if (variables.status === 'approved') {
+        toast.success("Claim approved and notification sent!");
+      } else {
+        toast.success("Claim status updated");
+      }
     },
     onError: (error) => {
       console.error('Update error:', error);
@@ -581,7 +606,10 @@ export default function Admin() {
                                           onClick={() => updateClaimStatusMutation.mutate({
                                             claimId: claim.id,
                                             status: 'approved',
-                                            itemId: claim.item_id
+                                            itemId: claim.item_id,
+                                            claimantName: claim.claimant_name,
+                                            claimantEmail: claim.claimant_email,
+                                            itemName: claim.found_items?.name
                                           })}
                                           aria-label={`Approve claim for ${claim.found_items?.name || 'item'}`}
                                         >

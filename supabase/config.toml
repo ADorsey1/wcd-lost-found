@@ -2,3 +2,6 @@ project_id = "nklvxkwuczwxbkrfzqjz"
 
 [functions.create-admin]
 verify_jwt = false
+
+[functions.send-claim-approved]
+verify_jwt = false
