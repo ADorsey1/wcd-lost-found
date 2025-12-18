@@ -27,6 +27,7 @@ export default function Submit() {
     description: "",
     category: "",
     location: "",
+    customLocation: "",
     dateFound: "",
     finderName: "",
     finderEmail: "",
@@ -80,7 +81,7 @@ export default function Submit() {
           name: formData.itemName,
           description: formData.description,
           category: formData.category,
-          location: formData.location,
+          location: formData.location === "Other" ? formData.customLocation : formData.location,
           date_found: formData.dateFound,
           image_url: imageUrl,
           reporter_name: formData.finderName,
@@ -236,6 +237,15 @@ export default function Submit() {
                       ))}
                     </SelectContent>
                   </Select>
+                  {formData.location === "Other" && (
+                    <Input
+                      placeholder="Enter the location"
+                      value={formData.customLocation}
+                      onChange={(e) => handleInputChange("customLocation", e.target.value)}
+                      required
+                      className="mt-2"
+                    />
+                  )}
                 </div>
               </div>
 
