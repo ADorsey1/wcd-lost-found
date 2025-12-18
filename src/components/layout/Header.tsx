@@ -16,9 +16,9 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/90 backdrop-blur-md supports-[backdrop-filter]:bg-background/70">
+    <header className="sticky top-0 z-50 w-full border-b border-foreground/10 bg-primary">
       <div className="container flex h-18 items-center justify-between py-3">
-        {/* Logo with personality */}
+        {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group">
           <div className="relative">
             <img 
@@ -28,27 +28,27 @@ export function Header() {
             />
           </div>
           <div className="flex flex-col">
-            <span className="font-display text-xl tracking-wide text-foreground leading-tight transition-colors group-hover:text-primary">
+            <span className="font-display text-xl tracking-wide text-primary-foreground leading-tight">
               ROVER SEARCH
             </span>
-            <span className="text-xs text-muted-foreground font-handwritten text-base">
-              Finding lost treasures since '24 ✨
+            <span className="text-xs text-primary-foreground/70">
+              Lost & Found System
             </span>
           </div>
         </Link>
 
-        {/* Desktop Navigation - with subtle personality */}
+        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-1" aria-label="Main navigation">
           {navLinks.map((link) => {
             const isActive = location.pathname === link.href;
             return (
               <Link key={link.href} to={link.href}>
                 <Button
-                  variant={isActive ? "default" : "ghost"}
-                  className={`font-medium transition-all duration-200 ${
+                  variant="ghost"
+                  className={`font-medium transition-all duration-200 rounded-lg ${
                     isActive 
-                      ? "rounded-organic" 
-                      : "hover:bg-accent/50 rounded-lg"
+                      ? "bg-background text-foreground hover:bg-background/90" 
+                      : "text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
                   }`}
                   aria-current={isActive ? "page" : undefined}
                 >
@@ -58,15 +58,15 @@ export function Header() {
             );
           })}
           
-          {/* Quick search hint */}
+          {/* Quick search */}
           <Link to="/browse" className="ml-2">
             <Button 
-              variant="outline" 
+              variant="ghost" 
               size="icon" 
-              className="rounded-full border-2 border-primary/20 hover:border-primary hover:bg-primary/5"
+              className="rounded-full text-primary-foreground hover:bg-primary-foreground/10"
               aria-label="Quick search"
             >
-              <Search className="h-4 w-4 text-primary" />
+              <Search className="h-4 w-4" />
             </Button>
           </Link>
         </nav>
@@ -75,7 +75,7 @@ export function Header() {
         <Button
           variant="ghost"
           size="icon"
-          className="md:hidden rounded-lg"
+          className="md:hidden rounded-lg text-primary-foreground hover:bg-primary-foreground/10"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileMenuOpen}
@@ -84,10 +84,10 @@ export function Header() {
         </Button>
       </div>
 
-      {/* Mobile Navigation - with slide animation */}
+      {/* Mobile Navigation */}
       {mobileMenuOpen && (
         <nav 
-          className="md:hidden border-t border-border/60 bg-background/95 backdrop-blur-md p-4 animate-slide-up"
+          className="md:hidden border-t border-primary-foreground/10 bg-primary p-4 animate-slide-up"
           aria-label="Mobile navigation"
         >
           <div className="flex flex-col gap-2">
@@ -102,9 +102,11 @@ export function Header() {
                   style={{ animationDelay: `${index * 0.05}s` }}
                 >
                   <Button
-                    variant={isActive ? "default" : "ghost"}
-                    className={`w-full justify-start font-medium ${
-                      isActive ? "rounded-organic" : "rounded-lg"
+                    variant="ghost"
+                    className={`w-full justify-start font-medium rounded-lg ${
+                      isActive 
+                        ? "bg-background text-foreground hover:bg-background/90" 
+                        : "text-primary-foreground hover:bg-primary-foreground/10"
                     }`}
                     aria-current={isActive ? "page" : undefined}
                   >
@@ -115,10 +117,10 @@ export function Header() {
             })}
           </div>
           
-          {/* Mobile friendly message */}
-          <div className="mt-4 pt-4 border-t border-border/60">
-            <p className="font-handwritten text-center text-muted-foreground text-lg">
-              Need help? We're at the cafeteria exit! 🚪
+          {/* Mobile help message */}
+          <div className="mt-4 pt-4 border-t border-primary-foreground/10">
+            <p className="text-center text-primary-foreground/70 text-sm">
+              Need help? We're at the cafeteria exit!
             </p>
           </div>
         </nav>
