@@ -1,10 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Caveat:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* Easton Area School District Colors - Crimson Red, Black, White */
+/* Handcrafted, human-feeling design system */
 
 @layer base {
   :root {
@@ -12,95 +13,103 @@
     --primary: 352 85% 42%;
     --primary-foreground: 0 0% 100%;
     
-    /* Background: Pure White #FFFFFF */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 0%;
+    /* Background: Warm off-white for that human touch */
+    --background: 40 20% 98%;
+    --foreground: 20 10% 12%;
 
-    /* Card: White */
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 0%;
+    /* Card: Soft cream */
+    --card: 40 30% 99%;
+    --card-foreground: 20 10% 12%;
 
     /* Popover */
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 0%;
+    --popover: 40 30% 99%;
+    --popover-foreground: 20 10% 12%;
 
-    /* Secondary: Light Gray #F5F5F5 */
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 0%;
+    /* Secondary: Warm gray */
+    --secondary: 30 10% 94%;
+    --secondary-foreground: 20 10% 12%;
 
-    /* Muted: Gray */
-    --muted: 0 0% 92%;
-    --muted-foreground: 0 0% 40%;
+    /* Muted: Warmer gray */
+    --muted: 30 8% 90%;
+    --muted-foreground: 20 8% 35%;
 
-    /* Accent: Crimson tint */
-    --accent: 352 60% 95%;
+    /* Accent: Crimson tint with warmth */
+    --accent: 352 50% 95%;
     --accent-foreground: 352 85% 35%;
 
     /* Destructive: Deep Red */
     --destructive: 0 85% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    /* Borders and inputs */
-    --border: 0 0% 88%;
-    --input: 0 0% 88%;
+    /* Borders and inputs - softer */
+    --border: 30 15% 85%;
+    --input: 30 15% 85%;
     --ring: 352 85% 42%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    /* Sidebar: Black #000000 */
-    --sidebar-background: 0 0% 0%;
-    --sidebar-foreground: 0 0% 96%;
+    /* Sidebar: Rich black */
+    --sidebar-background: 20 15% 8%;
+    --sidebar-foreground: 40 10% 96%;
     --sidebar-primary: 352 85% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 10%;
-    --sidebar-accent-foreground: 0 0% 96%;
-    --sidebar-border: 0 0% 20%;
+    --sidebar-accent: 20 10% 15%;
+    --sidebar-accent-foreground: 40 10% 96%;
+    --sidebar-border: 20 10% 20%;
     --sidebar-ring: 352 85% 48%;
 
-    /* Custom tokens */
-    --hero-gradient: linear-gradient(135deg, hsl(352, 85%, 42%) 0%, hsl(0, 0%, 0%) 100%);
-    --card-shadow: 0 4px 20px -4px hsl(0 0% 0% / 0.1);
-    --card-shadow-hover: 0 8px 30px -4px hsl(352 85% 42% / 0.2);
+    /* Custom handcrafted tokens */
+    --hero-gradient: linear-gradient(145deg, hsl(352, 85%, 38%) 0%, hsl(20, 20%, 12%) 100%);
+    --card-shadow: 0 4px 24px -8px hsl(20 15% 20% / 0.08);
+    --card-shadow-hover: 0 12px 40px -8px hsl(352 70% 40% / 0.15);
+    --glow-soft: 0 0 40px hsl(352 85% 42% / 0.1);
+    
+    /* Organic blob shapes for backgrounds */
+    --blob-1: radial-gradient(ellipse 80% 60% at 20% 30%, hsl(352 85% 42% / 0.06) 0%, transparent 70%);
+    --blob-2: radial-gradient(ellipse 60% 80% at 80% 70%, hsl(30 60% 70% / 0.08) 0%, transparent 70%);
   }
 
   .dark {
-    /* Dark mode: Black background #000000 */
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
+    /* Dark mode: Rich, warm black */
+    --background: 20 15% 6%;
+    --foreground: 40 10% 96%;
 
-    --card: 0 0% 8%;
-    --card-foreground: 0 0% 100%;
+    --card: 20 12% 10%;
+    --card-foreground: 40 10% 96%;
 
-    --popover: 0 0% 8%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 20 12% 10%;
+    --popover-foreground: 40 10% 96%;
 
     --primary: 352 85% 52%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 20 10% 15%;
+    --secondary-foreground: 40 10% 96%;
 
-    --muted: 0 0% 50%;
-    --muted-foreground: 0 0% 96%;
+    --muted: 20 8% 50%;
+    --muted-foreground: 40 8% 70%;
 
-    --accent: 352 60% 20%;
+    --accent: 352 50% 18%;
     --accent-foreground: 352 85% 70%;
 
     --destructive: 0 85% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
+    --border: 20 10% 18%;
+    --input: 20 10% 18%;
     --ring: 352 85% 52%;
 
-    --sidebar-background: 0 0% 0%;
-    --sidebar-foreground: 0 0% 96%;
+    --sidebar-background: 20 15% 5%;
+    --sidebar-foreground: 40 10% 96%;
     --sidebar-primary: 352 85% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 12%;
-    --sidebar-accent-foreground: 0 0% 96%;
-    --sidebar-border: 0 0% 15%;
+    --sidebar-accent: 20 10% 12%;
+    --sidebar-accent-foreground: 40 10% 96%;
+    --sidebar-border: 20 10% 15%;
     --sidebar-ring: 352 85% 55%;
+    
+    --blob-1: radial-gradient(ellipse 80% 60% at 20% 30%, hsl(352 85% 42% / 0.08) 0%, transparent 70%);
+    --blob-2: radial-gradient(ellipse 60% 80% at 80% 70%, hsl(30 40% 50% / 0.06) 0%, transparent 70%);
   }
 }
 
@@ -123,12 +132,70 @@
     @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-foreground;
   }
   
-  .animate-fade-in {
-    animation: fadeIn 0.5s ease-out forwards;
+  .font-handwritten {
+    font-family: 'Caveat', cursive;
   }
   
-  .animate-slide-up {
-    animation: slideUp 0.5s ease-out forwards;
+  /* Subtle rotation for that handcrafted feel */
+  .tilt-left {
+    transform: rotate(-1.5deg);
+  }
+  
+  .tilt-right {
+    transform: rotate(1.5deg);
+  }
+  
+  .tilt-subtle {
+    transform: rotate(-0.5deg);
+  }
+  
+  /* Organic blob backgrounds */
+  .bg-blobs {
+    background: var(--blob-1), var(--blob-2);
+  }
+  
+  /* Hand-drawn underline effect */
+  .underline-sketch {
+    position: relative;
+  }
+  
+  .underline-sketch::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: hsl(var(--primary));
+    border-radius: 2px;
+    transform: rotate(-0.5deg) scaleX(1.02);
+  }
+  
+  /* Staggered animation delays */
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.2s; }
+  .stagger-3 { animation-delay: 0.3s; }
+  .stagger-4 { animation-delay: 0.4s; }
+  .stagger-5 { animation-delay: 0.5s; }
+}
+
+@layer components {
+  /* Handcrafted card style */
+  .card-handcrafted {
+    @apply relative bg-card rounded-xl border border-border/60;
+    box-shadow: var(--card-shadow);
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  
+  .card-handcrafted:hover {
+    box-shadow: var(--card-shadow-hover);
+    transform: translateY(-4px) rotate(0.5deg);
+  }
+  
+  /* Organic button style */
+  .btn-organic {
+    @apply relative overflow-hidden;
+    border-radius: 0.875rem 1rem 0.9rem 1.1rem;
   }
 }
 
@@ -140,10 +207,81 @@
 @keyframes slideUp {
   from { 
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
   }
   to { 
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes slideInLeft {
+  from { 
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from { 
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes scaleIn {
+  from { 
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to { 
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-slide-left {
+  animation: slideInLeft 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-slide-right {
+  animation: slideInRight 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-wiggle {
+  animation: wiggle 0.5s ease-in-out;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
