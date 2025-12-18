@@ -28,7 +28,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.log(`Sending approval email to ${claimantEmail} for item: ${itemName}`);
 
     const emailResponse = await resend.emails.send({
-      from: "Rover Search <easdlostandfound@gmail.com>",
+      from: "Rover Search <onboarding@resend.dev>",
       to: [claimantEmail],
       subject: "Your Lost Item Claim Has Been Approved!",
       html: `
@@ -46,7 +46,7 @@ const handler = async (req: Request): Promise<Response> => {
           </div>
           
           <p style="font-size: 16px; line-height: 1.6; color: #333;">
-            If you have any questions, please contact us at <a href="mailto:lostandfound@eastonsd.org" style="color: #C70F2E;">lostandfound@eastonsd.org</a> or call (610) 730-0274.
+            If you have any questions, please contact us at <a href="mailto:easdlostandfound@gmail.com" style="color: #C70F2E;">easdlostandfound@gmail.com</a> or call (610) 730-0274.
           </p>
           
           <p style="font-size: 14px; color: #666; margin-top: 30px;">
