@@ -15,14 +15,6 @@ export default function Home() {
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
             {/* Left content - intentionally off-grid */}
             <div className="lg:col-span-7 lg:pr-8">
-              {/* Handwritten accent */}
-              <span 
-                className="inline-block font-handwritten text-2xl md:text-3xl text-primary mb-4 animate-slide-left tilt-subtle"
-                style={{ animationDelay: "0.1s" }}
-              >
-                Hey there, Rover! 👋
-              </span>
-              
               <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl xl:text-8xl tracking-wide text-foreground leading-[0.9] mb-6 animate-slide-up">
                 LOST
                 <span className="block text-primary tilt-right inline-block ml-2 lg:ml-4">
@@ -36,7 +28,7 @@ export default function Home() {
               >
                 Don't worry, we've got your back. Search through found items, report what you've discovered, 
                 or let us help reunite you with your stuff.
-                <span className="font-handwritten text-primary text-2xl ml-2">It happens to everyone!</span>
+                <span className="text-primary font-medium ml-2">It happens to everyone!</span>
               </p>
               
               <div 
@@ -90,7 +82,7 @@ export default function Home() {
                       <Sparkles className="w-10 h-10 text-primary" />
                     </div>
                     <div>
-                      <span className="font-handwritten text-lg text-primary">Recently found</span>
+                      <span className="text-sm font-medium text-primary">Recently found</span>
                       <h3 className="font-display text-2xl text-foreground">RED WATER BOTTLE</h3>
                     </div>
                   </div>
@@ -108,7 +100,7 @@ export default function Home() {
                     <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm font-medium">
                       Available
                     </span>
-                    <span className="font-handwritten text-lg text-muted-foreground">Could this be yours?</span>
+                    <span className="text-sm text-muted-foreground">Could this be yours?</span>
                   </div>
                 </div>
               </div>
@@ -149,7 +141,7 @@ export default function Home() {
       <section className="py-20 md:py-28 relative">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <span className="font-handwritten text-2xl text-primary mb-2 block animate-fade-in">
+            <span className="text-lg font-medium text-primary mb-2 block animate-fade-in">
               Super simple, we promise
             </span>
             <h2 className="font-display text-4xl md:text-6xl tracking-wide text-foreground mb-4 animate-slide-up">
@@ -210,7 +202,7 @@ export default function Home() {
                     {item.desc}
                   </p>
                   
-                  <span className="font-handwritten text-lg text-primary/70">
+                  <span className="text-sm font-medium text-primary/70">
                     {item.note}
                   </span>
                 </div>
@@ -225,7 +217,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-blobs" />
         <div className="container relative">
           <div className="mb-16 max-w-2xl">
-            <span className="font-handwritten text-2xl text-primary mb-2 block">
+            <span className="text-lg font-medium text-primary mb-2 block">
               Why students love us
             </span>
             <h2 className="font-display text-4xl md:text-5xl tracking-wide text-foreground mb-4">
@@ -293,7 +285,7 @@ export default function Home() {
                 <p className="text-muted-foreground text-sm leading-relaxed mb-3">
                   {feature.description}
                 </p>
-                <span className="font-handwritten text-primary text-lg">
+                <span className="text-sm font-medium text-primary">
                   {feature.accent}
                 </span>
               </div>
@@ -310,7 +302,7 @@ export default function Home() {
         <div className="container relative">
           <div className="max-w-3xl mx-auto text-center">
             <span 
-              className="inline-block font-handwritten text-2xl md:text-3xl text-primary-foreground/80 mb-4 animate-fade-in"
+              className="inline-block text-lg font-medium text-primary-foreground/80 mb-4 animate-fade-in"
             >
               Ready when you are
             </span>
@@ -354,10 +346,10 @@ export default function Home() {
             </div>
             
             <p 
-              className="mt-8 font-handwritten text-xl text-primary-foreground/60 animate-fade-in"
+              className="mt-8 text-sm text-primary-foreground/60 animate-fade-in"
               style={{ animationDelay: "0.4s" }}
             >
-              Questions? Stop by the cafeteria exit doors or email us anytime! 📧
+              Questions? Stop by the cafeteria exit doors or email us anytime!
             </p>
           </div>
         </div>
