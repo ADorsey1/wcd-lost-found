@@ -9,6 +9,7 @@ export default function Browse() {
   const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState("All Categories");
   const [location, setLocation] = useState("All Locations");
+  const [sortOrder, setSortOrder] = useState("newest");
 
   const { data: items = [], isLoading, error } = useQuery({
     queryKey: ['found-items'],
@@ -38,7 +39,7 @@ export default function Browse() {
   });
 
   const filteredItems = useMemo(() => {
-    return items.filter((item) => {
+    const filtered = items.filter((item) => {
       const matchesSearch =
         !searchQuery ||
         item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -52,12 +53,20 @@ export default function Browse() {
 
       return matchesSearch && matchesCategory && matchesLocation;
     });
-  }, [items, searchQuery, category, location]);
+
+    // Sort by date found
+    return filtered.sort((a, b) => {
+      const dateA = new Date(a.dateFound).getTime();
+      const dateB = new Date(b.dateFound).getTime();
+      return sortOrder === "newest" ? dateB - dateA : dateA - dateB;
+    });
+  }, [items, searchQuery, category, location, sortOrder]);
 
   const handleClearFilters = () => {
     setSearchQuery("");
     setCategory("All Categories");
     setLocation("All Locations");
+    setSortOrder("newest");
   };
 
   return (
@@ -73,7 +82,6 @@ export default function Browse() {
           </p>
         </div>
 
-        {/* Filters */}
         <div className="mb-8">
           <SearchFilters
             searchQuery={searchQuery}
@@ -82,6 +90,8 @@ export default function Browse() {
             setCategory={setCategory}
             location={location}
             setLocation={setLocation}
+            sortOrder={sortOrder}
+            setSortOrder={setSortOrder}
             onClear={handleClearFilters}
           />
         </div>
