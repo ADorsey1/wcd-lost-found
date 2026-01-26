@@ -17,16 +17,15 @@ export function AIAssistant() {
       domain: "www.chatbase.co"
     };
 
-    // Load Chatbase script
+    // Load Chatbase script with cache-busting
     const script = document.createElement("script");
-    script.src = "https://www.chatbase.co/embed.min.js";
+    script.src = `https://www.chatbase.co/embed.min.js?v=${Date.now()}`;
     script.setAttribute("chatbotId", "dNP6fgT1kE4T_xVxug5IK");
     script.setAttribute("domain", "www.chatbase.co");
     script.defer = true;
     document.body.appendChild(script);
 
     return () => {
-      // Cleanup on unmount
       document.body.removeChild(script);
     };
   }, []);
