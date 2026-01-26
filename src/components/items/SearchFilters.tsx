@@ -7,7 +7,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, X } from "lucide-react";
+import { Search, X, ArrowUpDown } from "lucide-react";
+
+export const sortOptions = [
+  { value: "newest", label: "Newest First" },
+  { value: "oldest", label: "Oldest First" },
+];
 
 export const categories = [
   "All Categories",
@@ -41,6 +46,8 @@ interface SearchFiltersProps {
   setCategory: (value: string) => void;
   location: string;
   setLocation: (value: string) => void;
+  sortOrder: string;
+  setSortOrder: (value: string) => void;
   onClear: () => void;
 }
 
@@ -51,9 +58,11 @@ export function SearchFilters({
   setCategory,
   location,
   setLocation,
+  sortOrder,
+  setSortOrder,
   onClear,
 }: SearchFiltersProps) {
-  const hasFilters = searchQuery || category !== "All Categories" || location !== "All Locations";
+  const hasFilters = searchQuery || category !== "All Categories" || location !== "All Locations" || sortOrder !== "newest";
 
   return (
     <div className="space-y-4">
@@ -86,13 +95,28 @@ export function SearchFilters({
 
         {/* Location Filter */}
         <Select value={location} onValueChange={setLocation}>
-          <SelectTrigger className="w-full md:w-[200px]">
+          <SelectTrigger className="w-full md:w-[200px]" aria-label="Filter by location">
             <SelectValue placeholder="Location" />
           </SelectTrigger>
           <SelectContent>
             {locations.map((loc) => (
               <SelectItem key={loc} value={loc}>
                 {loc}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        {/* Sort by Date */}
+        <Select value={sortOrder} onValueChange={setSortOrder}>
+          <SelectTrigger className="w-full md:w-[160px]" aria-label="Sort by date found">
+            <ArrowUpDown className="h-4 w-4 mr-2" />
+            <SelectValue placeholder="Sort by" />
+          </SelectTrigger>
+          <SelectContent>
+            {sortOptions.map((opt) => (
+              <SelectItem key={opt.value} value={opt.value}>
+                {opt.label}
               </SelectItem>
             ))}
           </SelectContent>
