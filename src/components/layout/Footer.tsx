@@ -130,9 +130,7 @@ export function Footer() {
         {/* Bottom bar - with heart */}
         <div className="mt-12 pt-8 border-t border-border/60">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-            <p className="flex items-center gap-1">
-              Made with <Heart className="h-4 w-4 text-primary fill-primary animate-pulse" /> by Rovers, for Rovers
-            </p>
+            <p>By Rovers, for Rovers</p>
             <p>
               © {new Date().getFullYear()} Easton Area School District
             </p>
